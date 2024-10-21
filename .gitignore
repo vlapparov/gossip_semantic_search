@@ -1,0 +1,9 @@
+data/processed/
+data/raw/
+.venv
+.DS_Store
+.idea/
+*.pyc
+*__pycache__*
+*venv*
+*private_scripts*
