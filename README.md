@@ -45,7 +45,7 @@ To launch the application locally, follow these steps:
 1. _cd_ to the project root directory:
 
    ```bash
-   cd ocus-ml
+   cd code
    ```
 
 2. Export the **PYTHONPATH**:
