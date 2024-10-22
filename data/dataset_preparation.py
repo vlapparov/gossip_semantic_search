@@ -8,7 +8,7 @@ import pandas as pd
 from utils.conf import DATA_DIR
 
 
-def load_data_as_dataframe(file_name):
+def load_data_as_dataframe(file_name) -> pd.DataFrame:
     data = []
 
     # Open the file and read each line
@@ -184,7 +184,7 @@ french_stopwords = {
 }
 
 
-def preprocess_french_text(text):
+def preprocess_french_text(text) -> str:
     # lowercase the text
     text = text.lower()
     # remove punctuation and special characters (keep words and spaces)

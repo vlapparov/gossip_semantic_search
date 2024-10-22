@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 from utils.conf import DATA_DIR
 
 
-def way_back_urls(host: str, with_subs: bool = False):
+def way_back_urls(host: str, with_subs: bool = False) -> list:
     """
     Fetch URLs from the Wayback Machine
     :param host: website host address
@@ -31,7 +31,7 @@ def way_back_urls(host: str, with_subs: bool = False):
     return results[1:]
 
 
-async def fetch(session, url):
+async def fetch(session, url) -> tuple:
     """
     Fetch the URL asynchronously
     :param session: aiohttp session
@@ -51,7 +51,7 @@ async def fetch(session, url):
         return url, f"Error: {e}"
 
 
-async def fetch_all(urls: list):
+async def fetch_all(urls: list) -> tuple:
     """
     Fetch all URLs asynchronously
     :param urls: list of URLs
@@ -65,13 +65,13 @@ async def fetch_all(urls: list):
         return results
 
 
-def split_into_batches(data, batch_size):
+def split_into_batches(data, batch_size) -> list:
     """Splits the data list into batches of the given batch size."""
     for i in range(0, len(data), batch_size):
         yield data[i: i + batch_size]
 
 
-async def process_and_save_in_batches(urls, batch_size=10, file_name="data.txt"):
+async def process_and_save_in_batches(urls, batch_size=10, file_name="data.txt") -> None:
     """Processes URLs in batches, runs fetch_all, and appends results to a file."""
     # Split the URLs into batches
     url_batches = list(split_into_batches(urls, batch_size))
@@ -92,7 +92,13 @@ async def process_and_save_in_batches(urls, batch_size=10, file_name="data.txt")
                 f.write(json.dumps({"url": url, "raw_text": data}) + "\n")
 
 
-def post_process_urls(urls: list, host: str = "vsd"):
+def post_process_urls(urls: list, host: str = "vsd") -> list:
+    """
+    Post-process the URLs source-wise to filter out unwanted URLs
+    :param urls: list of URLs
+    :param host: source host (basically a website)
+    :return: list of parsed URLs
+    """
     assert host in ["vsd", "public"], "Invalid host"
     if host == "vsd":
         # relevant urls extraction for vsd
