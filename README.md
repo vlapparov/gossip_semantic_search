@@ -66,6 +66,22 @@ The articles used in this project were parsed from historical archives of **vsd.
 **Wayback Machine API**. This method allowed for retrieving content from snapshots when the original websites
 were accessible. The parsed data was then processed and stored for semantic search.
 
+## Data Management
+
+- In order to parse the data from the historical archives of **vsd.fr** and **public.fr** run the following command:
+    ```bash 
+    poetry run python data/data_loader.py
+    ```
+- Once raw data is parsed, run the following command to process the data and store it locally for further usage:
+    ```bash
+    poetry run python data/dataset_preparation.py
+    ```
+- Run the following script to ingest processed data into the database (Attention: this script will delete all the data
+  from the database first):
+    ```bash
+    poetry run python data/ingest_embeddings.py
+    ```
+
 ## Embedding Model
 
 The project utilizes an open-source embedding model from the **Hugging Face** `sentence-transformers` library: *
@@ -120,20 +136,32 @@ with the **PostgreSQL** database to retrieve similar articles based on semantic 
 
 ## Possible Steps for Improvement
 
-While the current system performs well for basic semantic search functionality, there are several areas where the project can be enhanced further:
+While the current system performs well for basic semantic search functionality, there are several areas where the
+project can be enhanced further:
 
 ### 1. **Improving the Embedding Model**
 
-- **Explore Larger Models**: While `paraphrase-MiniLM-L6-v2` is lightweight and efficient, larger models like `sentence-transformers/paraphrase-mpnet-base-v2` or `sentence-transformers/all-mpnet-base-v2` could provide better accuracy and deeper semantic understanding at the cost of higher computational resources.
-- **Fine-Tuning**: Fine-tune the embedding model specifically on a dataset of French articles to capture more domain-specific nuances and improve the quality of the embeddings for this specific use case.
-- **Multilingual Models**: Investigate multilingual models like `mBERT` or `LaBSE`, which could further improve performance for French texts while retaining efficiency.
+- **Explore Larger Models**: While `paraphrase-MiniLM-L6-v2` is lightweight and efficient, larger models
+  like `sentence-transformers/paraphrase-mpnet-base-v2` or `sentence-transformers/all-mpnet-base-v2` could provide
+  better accuracy and deeper semantic understanding at the cost of higher computational resources.
+- **Fine-Tuning**: Fine-tune the embedding model specifically on a dataset of French articles to capture more
+  domain-specific nuances and improve the quality of the embeddings for this specific use case.
+- **Multilingual Models**: Investigate multilingual models like `mBERT` or `LaBSE`, which could further improve
+  performance for French texts while retaining efficiency.
 
 ### 2. **Enhanced Data Handling and Storage**
 
-- **Dynamic Data Updates**: Implement a pipeline to dynamically update the dataset by periodically fetching new articles from `vsd.fr` and `public.fr` (or using the Wayback Machine for historical data). This will ensure the search engine always has up-to-date content.
-- **Distributed Database Setup**: If the data size grows significantly, consider implementing a distributed setup using cloud databases or partitioned storage solutions to improve scalability and performance.
-  
+- **Dynamic Data Updates**: Implement a pipeline to dynamically update the dataset by periodically fetching new articles
+  from `vsd.fr` and `public.fr` (or using the Wayback Machine for historical data). This will ensure the search engine
+  always has up-to-date content.
+- **Distributed Database Setup**: If the data size grows significantly, consider implementing a distributed setup using
+  cloud databases or partitioned storage solutions to improve scalability and performance.
+
 ### 3. **Search Performance Optimization**
 
-- **Advanced Indexing**: Utilize **HNSW (Hierarchical Navigable Small World)** indexing or **FAISS (Facebook AI Similarity Search)** to accelerate the search of high-dimensional vectors in the database. This can make the system more responsive, especially with large datasets.
-- **Hybrid Search**: Combine semantic search with traditional keyword-based search (e.g., ElasticSearch) to leverage the strengths of both methods. This approach would balance between exact matches for keywords and contextual similarity for broader searches.
+- **Advanced Indexing**: Utilize **HNSW (Hierarchical Navigable Small World)** indexing or **FAISS (Facebook AI
+  Similarity Search)** to accelerate the search of high-dimensional vectors in the database. This can make the system
+  more responsive, especially with large datasets.
+- **Hybrid Search**: Combine semantic search with traditional keyword-based search (e.g., ElasticSearch) to leverage the
+  strengths of both methods. This approach would balance between exact matches for keywords and contextual similarity
+  for broader searches.
