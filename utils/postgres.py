@@ -97,7 +97,7 @@ class PostgresClient:
         try:
             with conn:
                 with conn.cursor() as cursor:
-                    cursor.execute('SELECT content FROM documents ORDER BY embedding <=> %s LIMIT %s',
+                    cursor.execute('SELECT url, content FROM documents ORDER BY embedding <=> %s LIMIT %s',
                                    (embedding, n_records,), )
                     result = cursor.fetchall()
                     return result

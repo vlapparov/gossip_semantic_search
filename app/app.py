@@ -1,15 +1,26 @@
 import streamlit as st
-import pandas as pd
+
+from data.dataset_preparation import preprocess_french_text
+from models.sentence_embeddings import SentenceEmbeddings
+from utils.postgres import PostgresClient
+
+
+@st.cache_resource
+def get_database_connector():
+    return PostgresClient()
+
+
+@st.cache_resource
+def get_embedding_model():
+    return SentenceEmbeddings()
 
 
 def main():
-    # Load the dataset (can be replaced with your own backend or database)
-    data = pd.read_csv('data/processed/processed.csv')
-    data = data.dropna()
-    data = data.drop_duplicates(subset=['raw_text'])
+    db_connector = get_database_connector()
+    model = get_embedding_model()
 
     # Set up the Streamlit app
-    st.title('Semantic Search Application')
+    st.title('Cool Gossip Search App')
 
     # Input field for the query
     query = st.text_input('Enter your search query:')
@@ -21,21 +32,17 @@ def main():
     if st.button('Search'):
 
         if query:
-            # Filter the data based on the query (simple string match for demonstration)
-            filtered_data = data[data['url'].str.contains(query, case=False, na=False)]
-
-            # Limit the results to the user-specified number
-            limited_results = filtered_data.head(limit).to_dict(orient='records')
-            for x in limited_results:
-                print(x, end='\n---------\n')
-            print(limited_results)
+            processed_query = preprocess_french_text(query)
+            embedding = model.encode(processed_query)
+            results = db_connector.search_similar_by_embedding(embedding=embedding, n_records=limit)
 
             # Display the results
-            if limited_results:
-                for result in limited_results:
-                    st.subheader(result['raw_text'][:200])
-                    st.write(result['processed_text'][:200])  # Show a snippet of content (first 200 characters)
-                    st.markdown(f"[Read more]({result['url']})", unsafe_allow_html=True)
+            if results:
+                for idx, result in enumerate(results, start=1):
+                    st.subheader(f"Gossip {idx}")
+                    article_preview = " ".join([x for x in result[1].split()[:30]]) + "..."
+                    st.write(article_preview)
+                    st.markdown(f"[Read more]({result[0]})", unsafe_allow_html=True)
             else:
                 st.write("No results found for your query.")
         else:
