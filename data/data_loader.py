@@ -6,6 +6,8 @@ import aiohttp
 import requests
 from bs4 import BeautifulSoup
 
+from utils.conf import DATA_DIR
+
 
 def way_back_urls(host: str, with_subs: bool = False):
     """
@@ -113,8 +115,7 @@ def post_process_urls(urls: list, host: str = "vsd"):
 
 
 if __name__ == '__main__':
-    DATA_PATH = os.path.dirname(os.path.abspath(__file__))
-    raw_data_folder = os.path.join(DATA_PATH, "raw")
+    raw_data_folder = os.path.join(DATA_DIR, "raw")
     os.makedirs(raw_data_folder, exist_ok=True)
     hosts = ["www.vsd.fr", "www.public.fr"]
     for host in hosts:

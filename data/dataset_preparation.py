@@ -5,6 +5,8 @@ import unicodedata
 
 import pandas as pd
 
+from utils.conf import DATA_DIR
+
 
 def load_data_as_dataframe(file_name):
     data = []
@@ -202,10 +204,9 @@ def preprocess_french_text(text):
 
 
 if __name__ == '__main__':
-    DATA_PATH = os.path.dirname(os.path.abspath(__file__))
     article_data_file_names = ["public.txt", "vsd.txt"]
-    raw_data_folder = os.path.join(DATA_PATH, "raw")
-    processed_data_folder = os.path.join(DATA_PATH, "processed")
+    raw_data_folder = os.path.join(DATA_DIR, "raw")
+    processed_data_folder = os.path.join(DATA_DIR, "processed")
     os.makedirs(processed_data_folder, exist_ok=True)
     article_data_file_paths = [os.path.join(raw_data_folder, x) for x in article_data_file_names]
     df = pd.concat([load_data_as_dataframe(x) for x in article_data_file_paths])
