@@ -1,7 +1,7 @@
 # Gossip Search Engine
 
 This project is a semantic search engine built to allow users to search articles
-from **vsd.fr** and **public.fr** websites. It uses a model for generating sentence embeddings to perform
+from `vsd.fr` and `public.fr` websites. It uses a model for generating sentence embeddings to perform
 semantic search, leveraging a **Postgres database with vector extensions** for
 similarity search and a **Streamlit** frontend for an interactive user interface.
 
@@ -62,13 +62,13 @@ To launch the application locally, follow these steps:
 
 ## About Data Search
 
-The articles used in this project were parsed from historical archives of **vsd.fr** and **public.fr** via the
+The articles used in this project were parsed from historical archives of `vsd.fr` and `public.fr` via the
 **Wayback Machine API**. This method allowed for retrieving content from snapshots when the original websites
 were accessible. The parsed data was then processed and stored for semantic search.
 
 ## Data Management
 
-- In order to parse the data from the historical archives of **vsd.fr** and **public.fr** run the following command:
+- In order to parse the data from the historical archives of `vsd.fr` and `public.fr` run the following command:
     ```bash 
     poetry run python data/data_loader.py
     ```
@@ -84,8 +84,7 @@ were accessible. The parsed data was then processed and stored for semantic sear
 
 ## Embedding Model
 
-The project utilizes an open-source embedding model from the **Hugging Face** `sentence-transformers` library: *
-*paraphrase-MiniLM-L6-v2**.
+The project utilizes an open-source embedding model from the **Hugging Face** `sentence-transformers` library: **paraphrase-MiniLM-L6-v2**.
 
 This model is a **distilled version of BERT** and is specifically designed for **paraphrase identification and semantic
 similarity tasks**. It transforms text into dense vector representations, which can then be compared using vector
@@ -95,6 +94,7 @@ similarity techniques (such as cosine similarity) to find semantically similar s
 
 The **paraphrase-MiniLM-L6-v2** model was chosen for this project due to the following reasons:
 
+- **Open source**: It is available and free to be used without any licensing restrictions.
 - **Efficiency**: It is a smaller, lightweight version of larger transformer models, which allows it to be fast and
   memory efficient. This makes it ideal for use in production environments with limited computational resources.
 - **Performance**: Despite its smaller size, the model delivers strong performance for tasks such as semantic search,

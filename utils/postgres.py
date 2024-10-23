@@ -85,12 +85,12 @@ class PostgresClient:
         finally:
             conn.close()
 
-    def search_similar_by_embedding(self, embedding: np.ndarray, n_records: int = 5):
+    def search_similar_by_embedding(self, embedding: np.ndarray, n_records: int = 5) -> List[List[str]]:
         """
         Search for similar records by embedding
         :param embedding: record embedding (np.ndarray of shape (384,))
         :param n_records: number of records to return
-        :return:
+        :return: list of records of format [[url, content]]
         """
         conn = psycopg2.connect(**self.params)
         register_vector(conn)
