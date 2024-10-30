@@ -13,10 +13,13 @@ def preprocess_article_data(data: pd.DataFrame) -> pd.DataFrame:
     return data
 
 
-if __name__ == '__main__':
+def ingest_data(n_records: int = None) -> None:
+    print("Ingesting data...")
     data_file_path = os.path.join(DATA_DIR, "processed", "processed.csv")
     df = pd.read_csv(data_file_path)
     df = preprocess_article_data(df)
+    if n_records:
+        df = df.head(n_records)
     db_connector = PostgresClient()
     model = SentenceEmbeddings()
 
@@ -33,3 +36,7 @@ if __name__ == '__main__':
         urls = batch_df["url"].tolist()
         articles = batch_df["raw_text"].tolist()
         db_connector.ingest_embeddings(urls=urls, contents=articles, embeddings=embeddings)
+
+
+if __name__ == '__main__':
+    ingest_data()

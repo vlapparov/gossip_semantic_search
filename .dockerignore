@@ -1,0 +1,11 @@
+data/raw
+**/.DS_Store
+**/.idea/
+**/*.pyc
+**/*__pycache__*
+**/*venv*
+**/*.pytest_cache
+**/logs
+**/Dockerfile
+**/results
+*private_scripts*

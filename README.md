@@ -60,6 +60,26 @@ To launch the application locally, follow these steps:
    poetry run streamlit run app/app.py 
    ```
 
+### Docker
+
+Using docker-compose, you can run the application with the following command:
+
+```bash
+docker-compose up
+```
+
+In order to remove the containers, run the following command:
+
+```bash
+docker-compose down
+```
+
+Note:
+
+- The application will be available at `http://localhost:8501`
+- It will take some time to download the required docker images and build the application
+- It will also take some time to ingest the data into the database for the first time
+
 ## About Data Search
 
 The articles used in this project were parsed from historical archives of `vsd.fr` and `public.fr` via the
@@ -84,7 +104,8 @@ were accessible. The parsed data was then processed and stored for semantic sear
 
 ## Embedding Model
 
-The project utilizes an open-source embedding model from the **Hugging Face** `sentence-transformers` library: **paraphrase-MiniLM-L6-v2**.
+The project utilizes an open-source embedding model from the **Hugging Face** `sentence-transformers` library: *
+*paraphrase-MiniLM-L6-v2**.
 
 This model is a **distilled version of BERT** and is specifically designed for **paraphrase identification and semantic
 similarity tasks**. It transforms text into dense vector representations, which can then be compared using vector

@@ -1,6 +1,7 @@
 import streamlit as st
 
 from data.dataset_preparation import preprocess_french_text
+from data.ingest_embeddings import ingest_data
 from models.sentence_embeddings import SentenceEmbeddings
 from utils.postgres import PostgresClient
 
@@ -15,9 +16,27 @@ def get_embedding_model():
     return SentenceEmbeddings()
 
 
+if "startup_done" not in st.session_state:
+    st.session_state.startup_done = False
+
+
+@st.cache_resource
+def start_ingest_data(n_records: int = None):
+    # Placeholder for the startup message
+    message_placeholder = st.empty()
+    message_placeholder.write("Ingesting data...")
+    ingest_data(n_records=n_records)
+
+    # Clear the message once startup is complete
+    message_placeholder.empty()
+    st.session_state.startup_done = True
+
+
 def main():
     db_connector = get_database_connector()
     model = get_embedding_model()
+    if not st.session_state.startup_done:
+        start_ingest_data()
 
     # Set up the Streamlit app
     st.title('Cool Gossip Search App')
